@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  php-fpm:
+    image: php:8-fpm
+    volumes:
+      - /var/www/ludz.blondais.lv:/var/www/html
+
+
+# version: "3.9"
+
+# services:
+#   nginx:
+#     image: nginx:latest
+#     restart: unless-stopped
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     volumes:
+#       - web-root:/var/www/html
+#       - ./nginx/conf:/etc/nginx/conf.d
+#       # - certbot-etc:/etc/letsencrypt
+#       # - certbot-var:/var/lib/letsencrypt
+#       # - dhparam:/etc/ssl/certs
+#     command: "/bin/sh -c 'while :; do sleep 6h; nginx -s reload; done & exec nginx -g \"daemon off;\"'"
+  
+#   # CERTBOT updates the ssl certs from let's encrypt
+# #   certbot:
+# #     image: certbot/certbot
+# #     restart: unless-stopped
+# #     volumes: 
+# #       - certbot-etc:/etc/letsencrypt
+# #       - certbot-var:/var/lib/letsencrypt
+# #       - web-root:/var/www/html
+# #     depends_on:
+# #       - nginx
+# #     # First run cert setup
+# #     command: certonly --webroot --webroot-path=/var/www/html --email a@pudans.lv --agree-tos --no-eff-email -d ludz.blondais.lv --dry-run -v
+# #     # Subsequent run configuration
+# #     #entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+      
+# # volumes:
+# #   certbot-etc:
+# #   certbot-var:
+# #   web-root:
+# #     driver: local
+# #     driver_opts:
+# #       type: none
+# #       device: /home/ubuntu/ludz/ttpd/docker/nginx/www/ # I believe the /home/service-admin folder was created by me on the server
+# #       o: bind
+#   # dhparam:
+#   #   driver: local
+#   #   driver_opts:
+#   #     type: none
+#   #     device: /home/servic-admin/nginx_project/dhparam/ # I believe the /home/service-admin folder was created by me on the server
+#   #     o: bind
+      
