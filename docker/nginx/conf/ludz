@@ -1,49 +1,48 @@
 server {
-    listen 80;
-    listen [::]:80;
 
-    server_name ludz.blondais.lv;
-    server_tokens off;
+        root /var/www/ludz.blondais.lv/html;
+        index index.html index.htm index.nginx-debian.html;
 
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
+        server_name ludz.blondais.lv;
 
-    location / {
-        return 301 https://ludz.blondais.lv$request_uri;
-    }
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+	    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+     }
+	#location ~ \.php$ {
+	#	try_files $uri =404;
+	#	fastcgi_split_path_info ^(.+\.php)(/.+)$;
+	#	fastcgi_pass localhost:9000;
+	#	fastcgi_index index.php;
+	#	include fastcgi_params;
+	#	fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+	#	fastcgi_param PATH_INFO $fastcgi_path_info;
+	#}
+
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/ludz.blondais.lv/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/ludz.blondais.lv/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
 }
-
 server {
-    listen 80;
-    server_name ludz.blondais.lv;
-    # server_tokens off;
+    if ($host = ludz.blondais.lv) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
 
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
 
-    # Redirect all traffic to HTTPS
-    return 301 https://$host$request_uri;
-}
+        listen 80;
+        listen [::]:80;
 
-server {
-    listen 443 ssl http2;
-    server_name ludz.blondais.lv;
+        server_name ludz.blondais.lv;
+    return 404; # managed by Certbot
 
-    # SSL certificate and key paths (replace with actual paths)
-    ssl_certificate /etc/letsencrypt/live/ludz.blondais.lv/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/ludz.blondais.lv/privkey.pem;
 
-    # Optional: Additional SSL settings (adjust as needed)
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!DH:!EXPORT:!LOW:!MD5:!RC4:!3DES:!PSK;
-    ssl_stapling on;
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
-
-    # Serve your application content from here
-    location / {
-        root /var/www/html;
-        index index.html index.htm;
-    }
 }
