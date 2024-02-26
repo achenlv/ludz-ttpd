@@ -1,20 +1,37 @@
 <?php
+#header('Content-Type: text/plain');
 
-include 'part3.php'; // Include the function from Part 3
+# , ["options" => ["min_range" => 0 , "max_range"=> 2100]]
+$sy=$_POST['startYear'];
+$ey=$_POST['endYear']; 
 
-if (isset($_POST['startYear']) && isset($_POST['endYear'])) {
-  $startYear = filter_input(INPUT_POST, 'startYear', FILTER_VALIDATE_INT);
-  $endYear = filter_input(INPUT_POST, 'endYear', FILTER_VALIDATE_INT);
+function isHoliday($year){
+  $day = new DateTimeImmutable("$year-11-18 00:00:00", new DateTimeZone("Europe/Riga"));
+  $currentTime = new DateTimeImmutable();
 
-  if ($startYear !== false && $endYear !== false && $startYear <= $endYear && $startYear >= 1900) {
-    for ($year = $startYear; $year <= $endYear; $year++) {
-      $isHoliday = isNextMondayAfterLatvianIndependenceDayHoliday($year);
-      echo "Year $year: " . ($isHoliday ? 'Next Monday after Independence Day is a holiday' : 'Next Monday after Independence Day is not a holiday') . '<br>';
-    }
-  } else {
-    echo "Invalid input. Please enter valid year numbers (positive integers with start year less than or equal to end year).";
+  if ($day->format('w') == 6 || $day->format('w') == 0) {
+          #echo "$year: Is holiday " . PHP_EOL;
+        $tense= ($day < $currentTime) ? 'was not ' : 'will be ';
   }
-} else {
-  echo "Please enter the year range.";
-}
+  else {
+        #echo "$year:  Is not Holiday" . PHP_EOL;
+        $tense= ($day < $currentTime) ? 'was not ' : 'will be ';
+  };
+  echo "The next Monday after November 18, $year, $tense a Holiday</br>" . PHP_EOL;
+};
+for ($i = $sy; $i <= $ey; $i++) {
+
+isHoliday($i); 
+
+}; 
+
+#if (isset($_POST['startYear']) && isset($_POST['endYear'])) {
+#  $startYear = filter_input(INPUT_POST, 'startYear', FILTER_VALIDATE_INT);
+#  $endYear = filter_input(INPUT_POST, 'endYear', FILTER_VALIDATE_INT);
+#
+#  for ($year = $startYear; $year <= $endYear; $year++) {
+#	  isHoliday($year);
+#  }  
+#}
+
 ?>

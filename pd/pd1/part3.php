@@ -1,29 +1,20 @@
 <?php
+header('Content-Type: text/plain');
 
-function isNextMondayAfterLatvianIndependenceDayHoliday($year) {
-  // Define Latvian independence day
-  $independenceDay = new DateTimeImmutable("$year-02-23");
+function isHoliday($year){
+  $day = new DateTimeImmutable("$year-11-18 00:00:00", new DateTimeZone("Europe/Riga"));
+  $currentTime = new DateTimeImmutable();
 
-  // Check if independence day is on Saturday or Sunday
-  if ($independenceDay->format('w') == 6 || $independenceDay->format('w') == 0) {
-    // Get next Monday
-    $nextMonday = $independenceDay->modify('+1 week')->modify('next monday');
+  if ($day->format('w') == 6 || $day->format('w') == 0) { 
+	  #echo "$year: Is holiday " . PHP_EOL;
+	$tense= ($day < $currentTime) ? 'was not ' : 'will be '; 
+  } 
+  else { 
+	#echo "$year:  Is not Holiday" . PHP_EOL;
+	$tense= ($day < $currentTime) ? 'was not ' : 'will be ';
+  };
+  echo "The next Monday after November 18, $year, $tense a Holiday" . PHP_EOL;
+};
 
-    // Check if next Monday is a public holiday (replace with your logic)
-    // This is a placeholder, replace with actual holiday checking logic for Latvia
-    $isHoliday = $nextMonday->format('m-d') === '05-01'; // Example: Check for May 1st
-
-    //return $isHoliday;
-    return true;
-  }
-
-  return false;
-}
-
-// Test cases
-$years = [2023, 2024, 2025];
-
-foreach ($years as $year) {
-  $isHoliday = isNextMondayAfterLatvianIndependenceDayHoliday($year);
-  echo "Year $year: " . ($isHoliday ? "Holiday" : "Not a holiday") . PHP_EOL;
-}
+isHoliday("2023"); 
+isHoliday("2024");
