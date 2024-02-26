@@ -10,18 +10,15 @@ function isHoliday($year){
   $currentTime = new DateTimeImmutable();
 
   if ($day->format('w') == 6 || $day->format('w') == 0) {
-          #echo "$year: Is holiday " . PHP_EOL;
-        $tense= ($day < $currentTime) ? 'was not ' : 'will be ';
+        $tense= ($day < $currentTime) ? 'was ' : 'will be ';
   }
   else {
-        #echo "$year:  Is not Holiday" . PHP_EOL;
-        $tense= ($day < $currentTime) ? 'was not ' : 'will be ';
-  };
+        $tense= ($day < $currentTime) ? 'was not ' : 'will be not';
   echo "The next Monday after November 18, $year, $tense a Holiday</br>" . PHP_EOL;
 };
 for ($i = $sy; $i <= $ey; $i++) {
 
-isHoliday($i); 
+  isHoliday($i); 
 
 }; 
 

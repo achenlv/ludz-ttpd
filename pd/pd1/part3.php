@@ -7,11 +7,11 @@ function isHoliday($year){
 
   if ($day->format('w') == 6 || $day->format('w') == 0) { 
 	  #echo "$year: Is holiday " . PHP_EOL;
-	$tense= ($day < $currentTime) ? 'was not ' : 'will be '; 
+	$tense= ($day < $currentTime) ? 'was ' : 'will be '; 
   } 
   else { 
 	#echo "$year:  Is not Holiday" . PHP_EOL;
-	$tense= ($day < $currentTime) ? 'was not ' : 'will be ';
+	$tense= ($day < $currentTime) ? 'was not ' : 'will be not';
   };
   echo "The next Monday after November 18, $year, $tense a Holiday" . PHP_EOL;
 };
